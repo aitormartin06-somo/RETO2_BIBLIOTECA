@@ -1,5 +1,8 @@
 package RETO2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Libro {
 
     // Atributos
@@ -9,9 +12,11 @@ public class Libro {
     private int anioPublicacion;
     private String genero;
     private Autor autor;
+    private List<Prestamo> prestamos;  // NUEVO ATRIBUTO
 
     // Constructor vacío
     public Libro() {
+        this.prestamos = new ArrayList<>();  // Inicializar lista
     }
 
     // Constructor completo
@@ -22,6 +27,7 @@ public class Libro {
         this.anioPublicacion = anioPublicacion;
         this.genero = genero;
         this.autor = autor;
+        this.prestamos = new ArrayList<>();  // Inicializar lista
     }
 
     // Getters y Setters
@@ -72,6 +78,15 @@ public class Libro {
     public void setAutor(Autor autor) {
         this.autor = autor;
     }
+    
+    // NUEVOS MÉTODOS PARA PRÉSTAMOS
+    public List<Prestamo> getPrestamos() {
+        return prestamos;
+    }
+    
+    public void addPrestamo(Prestamo prestamo) {
+        this.prestamos.add(prestamo);
+    }
 
     @Override
     public String toString() {
@@ -81,7 +96,8 @@ public class Libro {
                 ", isbn='" + isbn + '\'' +
                 ", anioPublicacion=" + anioPublicacion +
                 ", genero='" + genero + '\'' +
-                ", autor=" + autor.getNombre() +
+                ", autor=" + (autor != null ? autor.getNombre() : "null") +
+                ", prestamos=" + prestamos.size() +
                 '}';
     }
 }
