@@ -14,11 +14,9 @@ public class testConexion {
 
         cnx = InputOutput.getConexion(url, username, password);
         if (cnx == null) {
-
-            System.out.println("Sin conexion a la base de datos :(");
+            System.out.println("[REGISTRO testConexion] Sin conexion a la base de datos :(");
             return;
-
         }
-        System.out.println("Conexion a la base de datos exitosa !!!");
+        System.out.println("[REGISTRO testConexion] Conexion a la base de datos exitosa !!!");
     }
 }

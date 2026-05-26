@@ -13,9 +13,11 @@ public class ArraysAutores {
     };
 
     public static void main(String[] args) {
+        registro();
+    }
 
-        // Imprimir los autores para verificar
-        System.out.println("--- Lista de Autores ---");
+    public static void registro() {
+        System.out.println("[REGISTRO ArraysAutores] Lista de autores:");
         for (int i = 0; i < nombres.length; i++) {
             System.out.println("Autor " + (i + 1) + ": " + nombres[i] + " " + apellidos[i]);
         }

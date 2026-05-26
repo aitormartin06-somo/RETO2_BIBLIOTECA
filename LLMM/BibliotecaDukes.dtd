@@ -1,0 +1,85 @@
+<!ELEMENT biblioteca (libros, autores, libros_autores, penalizaciones, usuarios, ejemplares, prestamos)>
+
+<!-- ================= LIBROS ================= -->
+<!ELEMENT libros (libro+)>
+
+<!ELEMENT libro (titulo, isbn, editorial, genero, num_copias)>
+<!ATTLIST libro
+    id_libro ID #REQUIRED>
+
+<!ELEMENT titulo (#PCDATA)>
+<!ELEMENT isbn (#PCDATA)>
+<!ELEMENT editorial (#PCDATA)>
+<!ELEMENT genero (#PCDATA)>
+<!ELEMENT num_copias (#PCDATA)>
+
+
+<!-- ================= AUTORES ================= -->
+<!ELEMENT autores (autor+)>
+
+<!ELEMENT autor (nombre, apellidos, nacionalidad)>
+<!ATTLIST autor
+    id_autor ID #REQUIRED>
+
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT apellidos (#PCDATA)>
+<!ELEMENT nacionalidad (#PCDATA)>
+
+
+<!-- ============ RELACIÓN LIBROS - AUTORES ============ -->
+<!ELEMENT libros_autores (relacion+)>
+
+<!ELEMENT relacion EMPTY>
+<!ATTLIST relacion
+    id_libro IDREF #REQUIRED
+    id_autor IDREF #REQUIRED>
+
+
+<!-- ================= PENALIZACIONES ================= -->
+<!ELEMENT penalizaciones (penalizacion+)>
+
+<!ELEMENT penalizacion (descripcion, num_dias)>
+<!ATTLIST penalizacion
+    id_penalizacion ID #REQUIRED>
+
+<!ELEMENT descripcion (#PCDATA)>
+<!ELEMENT num_dias (#PCDATA)>
+
+
+<!-- ================= USUARIOS ================= -->
+<!ELEMENT usuarios (usuario+)>
+
+<!ELEMENT usuario (dni_user, nombre_user, telefono_user, password_user, nss, id_penalizacion)>
+<!ATTLIST usuario
+    id_user ID #REQUIRED>
+
+<!ELEMENT dni_user (#PCDATA)>
+<!ELEMENT nombre_user (#PCDATA)>
+<!ELEMENT telefono_user (#PCDATA)>
+<!ELEMENT password_user (#PCDATA)>
+<!ELEMENT nss (#PCDATA)>
+<!ELEMENT id_penalizacion (#PCDATA)>
+
+
+<!-- ================= EJEMPLARES ================= -->
+<!ELEMENT ejemplares (ejemplar+)>
+
+<!ELEMENT ejemplar (estado_fisico, id_libro)>
+<!ATTLIST ejemplar
+    id_ejemplar ID #REQUIRED>
+
+<!ELEMENT estado_fisico (#PCDATA)>
+<!ELEMENT id_libro (#PCDATA)>
+
+
+<!-- ================= PRESTAMOS ================= -->
+<!ELEMENT prestamos (prestamo+)>
+
+<!ELEMENT prestamo (fecha_alquiler, fecha_devolucion, id_ejemplar, id_user)>
+<!ATTLIST prestamo
+    id_prestamo ID #REQUIRED>
+
+<!ELEMENT fecha_alquiler (#PCDATA)>
+<!ELEMENT fecha_devolucion (#PCDATA)>
+<!ELEMENT id_ejemplar (#PCDATA)>
+<!ELEMENT id_user (#PCDATA)>

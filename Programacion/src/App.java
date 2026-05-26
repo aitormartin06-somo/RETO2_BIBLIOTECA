@@ -1,15 +1,12 @@
+import arrays.*;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
-
-import model.Autor;
-import model.Ejemplares;
-import model.Libro;
-import model.Prestamos;
-import model.Usuarios;
+import model.*;
 
 public class App {
 
@@ -30,6 +27,9 @@ public class App {
                 System.out.println("Saliendo por falta de conexión.");
                 return;
             }
+            cargarDatosInicialesSiEsNecesario();
+            log("Inicio del programa");
+            registrarTodasLasClases();
 
             boolean salir = false;
 
@@ -77,6 +77,192 @@ public class App {
         System.out.println("3. Actualizar");
         System.out.println("4. Eliminar");
         System.out.println("5. Salir");
+    }
+
+    public static void log(String mensaje) {
+        System.out.println("[REGISTRO App] " + mensaje);
+    }
+
+    public static void cargarDatosInicialesSiEsNecesario() {
+        if (!esquemaBibliotecaCorrecto()) {
+            System.out.println("\n[REGISTRO] Esquema de la base de datos incorrecto o incompleto. Se recrearán las tablas esperadas.");
+            crearEsquemaBiblioteca();
+        }
+
+        boolean necesitaCarga = tablaVacia("libros") || tablaVacia("autores") || tablaVacia("usuarios")
+                || tablaVacia("ejemplares") || tablaVacia("prestamos") || tablaVacia("libros_autores")
+                || tablaVacia("penalizaciones");
+
+        if (!necesitaCarga) {
+            return;
+        }
+
+        System.out.println("\n[REGISTRO] Base de datos vacía detectada. Insertando datos de ejemplo...");
+
+        Penalizaciones[] penalizaciones = new Penalizaciones[] {
+                new Penalizaciones(1, "Retraso leve", 3),
+                new Penalizaciones(2, "Retraso medio", 5),
+                new Penalizaciones(3, "Retraso grave", 10),
+                new Penalizaciones(4, "Pérdida de libro", 30),
+                new Penalizaciones(5, "Daño severo", 15)
+        };
+        for (Penalizaciones penalizacion : penalizaciones) {
+            insertarPenalizacionBD(penalizacion);
+        }
+
+        Autor[] autores = new Autor[] {
+                new Autor(11, "Isabel", "Allende", "Chile"),
+                new Autor(12, "Ray", "Bradbury", "EEUU"),
+                new Autor(13, "Jorge Luis", "Borges", "Argentina"),
+                new Autor(14, "Albert", "Camus", "Argelia"),
+                new Autor(15, "Virginia", "Woolf", "Reino Unido")
+        };
+        for (Autor autor : autores) {
+            insertarAutorBD(autor);
+        }
+
+        Libro[] libros = new Libro[] {
+                new Libro(11, "Crónica de una muerte", 9788439734130L, "Random House", "Realismo mágico", 7),
+                new Libro(12, "Fahrenheit 451", 9788490325070L, "Debolsillo", "Distopía", 9),
+                new Libro(13, "El resplandor", 9788497593748L, "Debolsillo", "Terror", 5),
+                new Libro(14, "Sapiens", 9788499926223L, "Debate", "Ensayo", 25),
+                new Libro(15, "Dune", 9788497596824L, "Debolsillo", "Ciencia ficción", 11)
+        };
+        for (Libro libro : libros) {
+            insertarLibroBD(libro);
+        }
+
+        Usuarios[] usuarios = new Usuarios[] {
+                new Usuarios(10, "01234567K", "Roberto Sanz", 600000010L, "rob10", 10123456789L, 1),
+                new Usuarios(11, "11122233L", "Ana Belén", 600000011L, "anaB11", 11122334455L, 1),
+                new Usuarios(12, "22233344M", "Pedro Picazo", 600000012L, "pedroP", 22233445566L, 1),
+                new Usuarios(13, "33344455N", "Marta Sánchez", 600000013L, "martaS", 33344556677L, 1),
+                new Usuarios(14, "44455566O", "Diego Alva", 600000014L, "diegoA", 44455667788L, 1)
+        };
+        for (Usuarios usuario : usuarios) {
+            insertarUsuarioBD(usuario);
+        }
+
+        Ejemplares[] ejemplares = new Ejemplares[] {
+                new Ejemplares(11, "Nuevo", 11),
+                new Ejemplares(12, "Usado", 11),
+                new Ejemplares(13, "Dañado", 12),
+                new Ejemplares(14, "Nuevo", 12),
+                new Ejemplares(15, "Aceptable", 13)
+        };
+        for (Ejemplares ejemplar : ejemplares) {
+            insertarEjemplarBD(ejemplar);
+        }
+
+        Prestamos[] prestamos = new Prestamos[] {
+                new Prestamos(11, "2025-11-10", "2025-11-17", 11, 10),
+                new Prestamos(12, "2025-11-11", "2025-11-18", 12, 11),
+                new Prestamos(13, "2025-11-12", "2025-11-19", 13, 12),
+                new Prestamos(14, "2025-11-13", "2025-11-20", 14, 13),
+                new Prestamos(15, "2025-11-14", "2025-11-21", 15, 14)
+        };
+        for (Prestamos prestamo : prestamos) {
+            insertarPrestamoBD(prestamo);
+        }
+
+        Libros_Autores[] relaciones = new Libros_Autores[] {
+                new Libros_Autores(11, 11),
+                new Libros_Autores(12, 12),
+                new Libros_Autores(13, 13),
+                new Libros_Autores(14, 14),
+                new Libros_Autores(15, 15)
+        };
+        for (Libros_Autores relacion : relaciones) {
+            insertarLibrosAutoresBD(relacion);
+        }
+    }
+
+    public static void registrarTodasLasClases() {
+        System.out.println("\n[REGISTRO] Registro de las clases disponibles:");
+        ArrayLibros.registro();
+        ArrayUsuarios.registro();
+        ArraysAutores.registro();
+        ArraysEjemplares.registro();
+        ArrayPrestamos.registro();
+
+        Autor[] autores = new Autor[] {
+            new Autor(1, "Gabriel", "García", "Española"),
+            new Autor(2, "Isabela", "Martínez", "Colombiana"),
+            new Autor(3, "Rafa", "López", "Mexicana"),
+            new Autor(4, "Emanuel", "González", "Argentina"),
+            new Autor(5, "Carlos", "Fernández", "Peruana")
+        };
+        for (Autor autor : autores) {
+            System.out.println(autor.registro());
+        }
+
+        Libro[] libros = new Libro[] {
+            new Libro(1, "El nombre del viento", 978849989113L, "Plaza & Janes", "Fantasía", 5),
+            new Libro(2, "Eliza y la bestia", 978607748291L, "Debolsillo", "Romance", 3),
+            new Libro(3, "El principito", 978849838959L, "Aguilar", "Infantil", 10),
+            new Libro(4, "El resplandor", 978849032447L, "Editorial Planeta", "Terror", 4),
+            new Libro(5, "El psicoanalista", 978846632614L, "Tusquets", "Suspense", 6)
+        };
+        for (Libro libro : libros) {
+            System.out.println(libro.registro());
+        }
+
+        Usuarios[] usuarios = new Usuarios[] {
+            new Usuarios(1, "12345678A", "Juan", 123456789L, "clave123", 123456789L, 0),
+            new Usuarios(2, "87654321B", "María", 987654321L, "pass456", 987654321L, 1),
+            new Usuarios(3, "45678912C", "Pedro", 456789123L, "usuario789", 456789123L, 0),
+            new Usuarios(4, "78912345D", "Lucía", 789123456L, "segura123", 789123456L, 2),
+            new Usuarios(5, "32165498E", "Carlos", 321654987L, "clave999", 321654987L, 0)
+        };
+        for (Usuarios usuario : usuarios) {
+            System.out.println(usuario.registro());
+        }
+
+        Ejemplares[] ejemplares = new Ejemplares[] {
+            new Ejemplares(1, "Nuevo", 101),
+            new Ejemplares(2, "Usado", 102),
+            new Ejemplares(3, "Dañado", 103),
+            new Ejemplares(4, "Regular", 104),
+            new Ejemplares(5, "Nuevo", 105)
+        };
+        for (Ejemplares ejemplar : ejemplares) {
+            System.out.println(ejemplar.registro());
+        }
+
+        Prestamos[] prestamos = new Prestamos[] {
+            new Prestamos(1, "2025-05-01", "2025-05-15", 101, 1),
+            new Prestamos(2, "2025-05-03", "2025-05-17", 102, 2),
+            new Prestamos(3, "2025-05-05", "2025-05-20", 103, 3),
+            new Prestamos(4, "2025-05-07", "2025-05-21", 104, 4),
+            new Prestamos(5, "2025-05-09", "2025-05-23", 105, 5)
+        };
+        for (Prestamos prestamo : prestamos) {
+            System.out.println(prestamo.registro());
+        }
+
+        Penalizaciones[] penalizaciones = new Penalizaciones[] {
+            new Penalizaciones(1, "Retraso leve", 3),
+            new Penalizaciones(2, "Retraso medio", 5),
+            new Penalizaciones(3, "Retraso grave", 10),
+            new Penalizaciones(4, "Pérdida de libro", 30),
+            new Penalizaciones(5, "Daño severo", 15)
+        };
+        for (Penalizaciones penalizacion : penalizaciones) {
+            System.out.println(penalizacion.registro());
+        }
+
+        Libros_Autores[] relaciones = new Libros_Autores[] {
+            new Libros_Autores(101, 1),
+            new Libros_Autores(102, 2),
+            new Libros_Autores(103, 3),
+            new Libros_Autores(104, 4),
+            new Libros_Autores(105, 5)
+        };
+        for (Libros_Autores relacion : relaciones) {
+            System.out.println(relacion.registro());
+        }
+
+        InputOutput.registro();
     }
 
     public static boolean validarConexion() {
@@ -921,6 +1107,203 @@ public class App {
         return false;
     }
 
+    public static boolean existePenalizacion(int idPenalizacion) {
+        Connection cnx = getConexion();
+        if (cnx == null) {
+            System.out.println("Sin conexion a la base de datos :(");
+            return false;
+        }
+
+        String sql = "SELECT COUNT(*) AS total FROM penalizaciones WHERE id_penalizacion = ?";
+        try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
+            pstmt.setInt(1, idPenalizacion);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total") > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public static void insertarPenalizacionBD(Penalizaciones penalizacion) {
+        if (existePenalizacion(penalizacion.getId_penalizacion())) {
+            System.out.println("La penalización con id " + penalizacion.getId_penalizacion() + " ya existe. No se insertará.");
+            return;
+        }
+
+        Connection cnx = getConexion();
+        if (cnx == null) {
+            System.out.println("Sin conexion a la base de datos :(");
+            return;
+        }
+
+        String sql = "INSERT INTO penalizaciones (id_penalizacion, descripcion, num_dias) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
+            pstmt.setInt(1, penalizacion.getId_penalizacion());
+            pstmt.setString(2, penalizacion.getDescripcion());
+            pstmt.setInt(3, penalizacion.getNum_dias_penalizacion());
+
+            int filasInsertadas = pstmt.executeUpdate();
+            if (filasInsertadas > 0) {
+                System.out.println("Penalización insertada exitosamente:");
+                System.out.println(penalizacion.registro());
+            } else {
+                System.out.println("No se insertó ninguna penalización.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al insertar penalización: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static boolean tablaExiste(String tabla) {
+        Connection cnx = getConexion();
+        if (cnx == null) {
+            System.out.println("Sin conexion a la base de datos :(");
+            return false;
+        }
+
+        try {
+            DatabaseMetaData meta = cnx.getMetaData();
+            try (ResultSet rs = meta.getTables(null, null, tabla, new String[] { "TABLE" })) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+            try (ResultSet rs = meta.getTables(null, null, tabla.toUpperCase(), new String[] { "TABLE" })) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+            try (ResultSet rs = meta.getTables(null, null, tabla.toLowerCase(), new String[] { "TABLE" })) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static boolean esquemaBibliotecaCorrecto() {
+        return tablaExiste("libros") && tablaExiste("autores") && tablaExiste("usuarios")
+                && tablaExiste("ejemplares") && tablaExiste("prestamos") && tablaExiste("libros_autores")
+                && tablaExiste("penalizaciones");
+    }
+
+    public static void crearEsquemaBiblioteca() {
+        Connection cnx = getConexion();
+        if (cnx == null) {
+            System.out.println("Sin conexion a la base de datos :(");
+            return;
+        }
+
+        String[] statements = new String[] {
+                "DROP TABLE IF EXISTS PRESTAMOS",
+                "DROP TABLE IF EXISTS EJEMPLARES",
+                "DROP TABLE IF EXISTS USUARIOS",
+                "DROP TABLE IF EXISTS PENALIZACIONES",
+                "DROP TABLE IF EXISTS LIBROS_AUTORES",
+                "DROP TABLE IF EXISTS AUTORES",
+                "DROP TABLE IF EXISTS LIBROS",
+
+                "CREATE TABLE LIBROS ("
+                        + "ID_LIBRO INT PRIMARY KEY AUTO_INCREMENT,"
+                        + "TITULO VARCHAR(100) NOT NULL,"
+                        + "ISBN BIGINT UNIQUE,"
+                        + "EDITORIAL VARCHAR(50),"
+                        + "GENERO VARCHAR(30),"
+                        + "NUM_COPIAS INT DEFAULT 0"
+                        + ")",
+
+                "CREATE TABLE AUTORES ("
+                        + "ID_AUTOR INT PRIMARY KEY AUTO_INCREMENT,"
+                        + "NOMBRE VARCHAR(50),"
+                        + "APELLIDOS VARCHAR(50),"
+                        + "NACIONALIDAD VARCHAR(30)"
+                        + ")",
+
+                "CREATE TABLE LIBROS_AUTORES ("
+                        + "ID_LIBRO INT,"
+                        + "ID_AUTOR INT,"
+                        + "PRIMARY KEY (ID_LIBRO, ID_AUTOR),"
+                        + "CONSTRAINT FK_ID_LIBRO FOREIGN KEY (ID_LIBRO) REFERENCES LIBROS (ID_LIBRO) ON DELETE CASCADE,"
+                        + "CONSTRAINT FK_ID_AUTOR FOREIGN KEY (ID_AUTOR) REFERENCES AUTORES (ID_AUTOR) ON DELETE CASCADE"
+                        + ")",
+
+                "CREATE TABLE PENALIZACIONES ("
+                        + "ID_PENALIZACION INT PRIMARY KEY AUTO_INCREMENT,"
+                        + "DESCRIPCION VARCHAR(100),"
+                        + "NUM_DIAS INT"
+                        + ")",
+
+                "CREATE TABLE USUARIOS ("
+                        + "ID_USER INT PRIMARY KEY AUTO_INCREMENT,"
+                        + "DNI_USER VARCHAR(10) UNIQUE,"
+                        + "NOMBRE_USER VARCHAR(50),"
+                        + "TELEFONO_USER VARCHAR(15),"
+                        + "PASSWORD_USER VARCHAR(100),"
+                        + "NSS BIGINT,"
+                        + "ID_PENALIZACION INT,"
+                        + "FECHA_PENALIZACION DATE,"
+                        + "CONSTRAINT FK_ID_PENALIZACION FOREIGN KEY (ID_PENALIZACION) REFERENCES PENALIZACIONES (ID_PENALIZACION)"
+                        + ")",
+
+                "CREATE TABLE EJEMPLARES ("
+                        + "ID_EJEMPLAR INT PRIMARY KEY AUTO_INCREMENT,"
+                        + "ESTADO_FISICO VARCHAR(50),"
+                        + "ID_LIBRO INT,"
+                        + "CONSTRAINT FK_COD_LIBRO FOREIGN KEY (ID_LIBRO) REFERENCES LIBROS (ID_LIBRO) ON DELETE CASCADE"
+                        + ")",
+
+                "CREATE TABLE PRESTAMOS ("
+                        + "ID_PRESTAMO INT PRIMARY KEY AUTO_INCREMENT,"
+                        + "FECHA_ALQUILER DATE,"
+                        + "FECHA_DEVOLUCION DATE,"
+                        + "ID_EJEMPLAR INT,"
+                        + "ID_USER INT,"
+                        + "CONSTRAINT FK_ID_USUARIO FOREIGN KEY (ID_USER) REFERENCES USUARIOS (ID_USER),"
+                        + "CONSTRAINT FK_ID_EJEMPLAR FOREIGN KEY (ID_EJEMPLAR) REFERENCES EJEMPLARES (ID_EJEMPLAR)"
+                        + ")"
+        };
+
+        try (Statement stmt = cnx.createStatement()) {
+            for (String sql : statements) {
+                stmt.executeUpdate(sql);
+            }
+            System.out.println("[REGISTRO] Esquema de base de datos recreado correctamente.");
+        } catch (SQLException e) {
+            System.out.println("Error al recrear el esquema de la base de datos: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static boolean tablaVacia(String tabla) {
         Connection cnx = getConexion();
         if (cnx == null) {
@@ -992,36 +1375,6 @@ public class App {
             }
         }
 
-        try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
-            pstmt.setInt(1, usuario.getid_user());
-            pstmt.setString(2, usuario.getdni_user());
-            pstmt.setString(3, usuario.getnombre_user());
-            pstmt.setLong(4, usuario.gettelefono_user());
-            pstmt.setString(5, usuario.getpassword_user());
-            pstmt.setLong(6, usuario.getNss());
-            if (usuario.getId_penalizacion() > 0) {
-                pstmt.setInt(7, usuario.getId_penalizacion());
-            } else {
-                pstmt.setNull(7, java.sql.Types.INTEGER);
-            }
-
-            int filasInsertadas = pstmt.executeUpdate();
-            if (filasInsertadas > 0) {
-                System.out.println("Usuario insertado exitosamente:");
-                System.out.println(usuario);
-            } else {
-                System.out.println("No se insertó ningún usuario.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al insertar usuario: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            try {
-                cnx.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static Usuarios obtenerUsuarioPorId(int idUsuario) {

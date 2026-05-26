@@ -73,4 +73,8 @@ public class Libro {
     public String toString() {
         return "ID: " + id_libro + " | Título: " + titulo + " | ISBN: " + isbn + " | Editorial: " + editorial + " | Género: " + genero + " | Copias: " + num_copias;
     }
+
+    public String registro() {
+        return "[REGISTRO Libro] " + toString();
+    }
 }

@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE biblioteca SYSTEM "BibliotecaDukes.dtd">
+<biblioteca>
+
+    <!-- ================= LIBROS ================= -->
+    <libros>
+        <libro id_libro="L1">
+            <titulo>El Quijote</titulo>
+            <isbn>9788491050295</isbn>
+            <editorial>Alfaguara</editorial>
+            <genero>Clásico</genero>
+            <num_copias>4</num_copias>
+        </libro>
+
+        <libro id_libro="L2">
+            <titulo>1984</titulo>
+            <isbn>9780451524935</isbn>
+            <editorial>Penguin</editorial>
+            <genero>Distopía</genero>
+            <num_copias>6</num_copias>
+        </libro>
+
+        <libro id_libro="L3">
+            <titulo>Fundación</titulo>
+            <isbn>9780553293357</isbn>
+            <editorial>Gnome Press</editorial>
+            <genero>Ciencia Ficción</genero>
+            <num_copias>5</num_copias>
+        </libro>
+    </libros>
+
+
+    <!-- ================= AUTORES ================= -->
+    <autores>
+        <autor id_autor="A1">
+            <nombre>Miguel</nombre>
+            <apellidos>de Cervantes</apellidos>
+            <nacionalidad>España</nacionalidad>
+        </autor>
+
+        <autor id_autor="A2">
+            <nombre>George</nombre>
+            <apellidos>Orwell</apellidos>
+            <nacionalidad>Reino Unido</nacionalidad>
+        </autor>
+
+        <autor id_autor="A3">
+            <nombre>Isaac</nombre>
+            <apellidos>Asimov</apellidos>
+            <nacionalidad>Rusia</nacionalidad>
+        </autor>
+    </autores>
+
+
+    <!-- ============ RELACIÓN LIBROS - AUTORES ============ -->
+    <libros_autores>
+        <relacion id_libro="L1" id_autor="A1"/>
+        <relacion id_libro="L2" id_autor="A2"/>
+        <relacion id_libro="L3" id_autor="A3"/>
+    </libros_autores>
+
+
+    <!-- ================= PENALIZACIONES ================= -->
+    <penalizaciones>
+        <penalizacion id_penalizacion="P1">
+            <descripcion>Retraso leve</descripcion>
+            <num_dias>3</num_dias>
+        </penalizacion>
+
+        <penalizacion id_penalizacion="P2">
+            <descripcion>Retraso grave</descripcion>
+            <num_dias>15</num_dias>
+        </penalizacion>
+
+        <penalizacion id_penalizacion="P3">
+            <descripcion>Pérdida de ejemplar</descripcion>
+            <num_dias>30</num_dias>
+        </penalizacion>
+    </penalizaciones>
+
+
+    <!-- ================= USUARIOS ================= -->
+    <usuarios>
+        <usuario id_user="U1">
+            <dni_user>12345678A</dni_user>
+            <nombre_user>Ainur</nombre_user>
+            <telefono_user>666555444</telefono_user>
+            <password_user>pass123</password_user>
+            <nss>123456789012</nss>
+            <id_penalizacion>P1</id_penalizacion>
+        </usuario>
+
+        <usuario id_user="U2">
+            <dni_user>87654321B</dni_user>
+            <nombre_user>Markel</nombre_user>
+            <telefono_user>600111222</telefono_user>
+            <password_user>markel22</password_user>
+            <nss>987654321000</nss>
+            <id_penalizacion>P2</id_penalizacion>
+        </usuario>
+
+        <usuario id_user="U3">
+            <dni_user>11223344C</dni_user>
+            <nombre_user>Enol</nombre_user>
+            <telefono_user>699888777</telefono_user>
+            <password_user>enolXD</password_user>
+            <nss>111222333444</nss>
+            <id_penalizacion>P3</id_penalizacion>
+        </usuario>
+    </usuarios>
+
+
+    <!-- ================= EJEMPLARES ================= -->
+    <ejemplares>
+        <ejemplar id_ejemplar="E1">
+            <estado_fisico>Bien</estado_fisico>
+            <id_libro>L1</id_libro>
+        </ejemplar>
+
+        <ejemplar id_ejemplar="E2">
+            <estado_fisico>Regular</estado_fisico>
+            <id_libro>L2</id_libro>
+        </ejemplar>
+
+        <ejemplar id_ejemplar="E3">
+            <estado_fisico>Excelente</estado_fisico>
+            <id_libro>L3</id_libro>
+        </ejemplar>
+
+        <ejemplar id_ejemplar="E4">
+            <estado_fisico>Deteriorado</estado_fisico>
+            <id_libro>L1</id_libro>
+        </ejemplar>
+    </ejemplares>
+
+
+    <!-- ================= PRESTAMOS ================= -->
+    <prestamos>
+        <prestamo id_prestamo="PR1">
+            <fecha_alquiler>2024-05-01</fecha_alquiler>
+            <fecha_devolucion>2024-05-10</fecha_devolucion>
+            <id_ejemplar>E1</id_ejemplar>
+            <id_user>U1</id_user>
+        </prestamo>
+
+        <prestamo id_prestamo="PR2">
+            <fecha_alquiler>2024-05-03</fecha_alquiler>
+            <fecha_devolucion>2024-05-18</fecha_devolucion>
+            <id_ejemplar>E2</id_ejemplar>
+            <id_user>U2</id_user>
+        </prestamo>
+
+        <prestamo id_prestamo="PR3">
+            <fecha_alquiler>2024-05-20</fecha_alquiler>
+            <fecha_devolucion></fecha_devolucion>
+            <id_ejemplar>E3</id_ejemplar>
+            <id_user>U3</id_user>
+        </prestamo>
+    </prestamos>
+
+</biblioteca>
+
+

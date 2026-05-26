@@ -18,10 +18,11 @@ public class ArraysEjemplares {
     };
 
     public static void main(String[] args) {
+        registro();
+    }
 
-        // Imprimir los ejemplares para verificar
-        System.out.println("--- Lista de Ejemplares ---");
-
+    public static void registro() {
+        System.out.println("[REGISTRO ArraysEjemplares] Lista de ejemplares:");
         for (int i = 0; i < id_ejemplar.length; i++) {
             System.out.println(
                     "Ejemplar " + (i + 1) +

@@ -44,4 +44,8 @@ public class Ejemplares {
         return "ID: " + id_ejemplar + " | Estado físico: " + estado_fisico + " | ID Libro: " + id_libro;
     }
 
+    public String registro() {
+        return "[REGISTRO Ejemplares] " + toString();
+    }
+
 }

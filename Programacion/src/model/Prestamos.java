@@ -65,4 +65,8 @@ public class Prestamos {
         return "ID: " + id_prestamo + " | Fecha alquiler: " + fecha_alquiler + " | Fecha devolución: "
                 + fecha_devolucion + " | ID Ejemplar: " + id_ejemplar + " | ID Usuario: " + id_usuario;
     }
+
+    public String registro() {
+        return "[REGISTRO Prestamos] " + toString();
+    }
 }

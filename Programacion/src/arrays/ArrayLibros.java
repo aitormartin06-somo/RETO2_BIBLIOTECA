@@ -10,7 +10,11 @@ public class ArrayLibros {
     };
 
     public static void main(String[] args) {
-        System.out.println("=== Lista de Libros ===");
+        registro();
+    }
+
+    public static void registro() {
+        System.out.println("[REGISTRO ArrayLibros] Lista de libros:");
         for (int i = 0; i < titulos.length; i++) {
             System.out.println("Libro " + (i + 1) + ": " + titulos[i]);
         }

@@ -1,5 +1,7 @@
 {
-  "java.project.sourcePaths": ["src"],
+  "java.project.sourcePaths": [
+    "src"
+  ],
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": ["lib/**/*.jar"],
   "python-envs.pythonProjects": [
@@ -8,5 +10,6 @@
       "envManager": "ms-python.python:venv",
       "packageManager": "ms-python.python:pip"
     }
-  ]
+  ],
+  "java.debug.settings.onBuildFailureProceed": true
 }

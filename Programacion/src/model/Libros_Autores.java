@@ -26,5 +26,13 @@ public class Libros_Autores {
         this.id_autor = p_id_autor;
     }
     
+    @Override
+    public String toString() {
+        return "ID Libro: " + id_libro + " | ID Autor: " + id_autor;
+    }
+
+    public String registro() {
+        return "[REGISTRO Libros_Autores] " + toString();
+    }
 
 }

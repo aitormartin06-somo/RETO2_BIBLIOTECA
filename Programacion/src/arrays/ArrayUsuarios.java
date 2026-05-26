@@ -11,7 +11,11 @@ public class ArrayUsuarios {
     };
 
     public static void main(String[] args) {
-        System.out.println("=== Lista de Usuarios ===");
+        registro();
+    }
+
+    public static void registro() {
+        System.out.println("[REGISTRO ArrayUsuarios] Lista de usuarios:");
         for (int i = 0; i < usuarios.length; i++) {
             System.out.println("Usuario " + (i + 1) + ": " + usuarios[i]);
         }

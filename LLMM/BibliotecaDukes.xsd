@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="biblioteca">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="libros"/>
+        <xs:element ref="autores"/>
+        <xs:element ref="libros_autores"/>
+        <xs:element ref="penalizaciones"/>
+        <xs:element ref="usuarios"/>
+        <xs:element ref="ejemplares"/>
+        <xs:element ref="prestamos"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="libros">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="libro" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="libro">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="titulo" type="xs:string"/>
+        <xs:element name="isbn" type="xs:string"/>
+        <xs:element name="editorial" type="xs:string"/>
+        <xs:element name="genero" type="xs:string"/>
+        <xs:element name="num_copias" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="id_libro" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="autores">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="autor" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="autor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="nombre" type="xs:string"/>
+        <xs:element name="apellidos" type="xs:string"/>
+        <xs:element name="nacionalidad" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="id_autor" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="libros_autores">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="relacion" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="relacion">
+    <xs:complexType>
+      <xs:attribute name="id_autor" type="xs:string" use="required"/>
+      <xs:attribute name="id_libro" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="penalizaciones">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="penalizacion" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="penalizacion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="descripcion" type="xs:string"/>
+        <xs:element name="num_dias" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="id_penalizacion" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="usuarios">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="usuario" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="usuario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="dni_user" type="xs:string"/>
+        <xs:element name="nombre_user" type="xs:string"/>
+        <xs:element name="telefono_user" type="xs:string"/>
+        <xs:element name="password_user" type="xs:string"/>
+        <xs:element name="nss" type="xs:string"/>
+        <xs:element name="id_penalizacion" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="id_user" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ejemplares">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ejemplar" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ejemplar">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="estado_fisico" type="xs:string"/>
+        <xs:element name="id_libro" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="id_ejemplar" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="prestamos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="prestamo" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="prestamo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="fecha_alquiler" type="xs:string"/>
+        <xs:element name="fecha_devolucion" type="xs:string"/>
+        <xs:element name="id_ejemplar" type="xs:string"/>
+        <xs:element name="id_user" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="id_prestamo" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

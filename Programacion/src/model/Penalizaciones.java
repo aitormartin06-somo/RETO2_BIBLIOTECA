@@ -44,4 +44,8 @@ public class Penalizaciones {
         return "ID: " + id_penalizacion + " | Descripción: " + descripcion + " | Días de penalización: " + num_dias_penalizacion;
     }
 
+    public String registro() {
+        return "[REGISTRO Penalizaciones] " + toString();
+    }
+
 }

@@ -54,4 +54,8 @@ public class Autor {
         return "ID: " + id_autor + " | Nombre: " + nombre + " | Apellidos: " + apellidos + " | Nacionalidad: "
                 + nacionalidad;
     }
+
+    public String registro() {
+        return "[REGISTRO Autor] " + toString();
+    }
 }

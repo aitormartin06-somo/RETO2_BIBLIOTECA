@@ -86,4 +86,8 @@ public class Usuarios {
                 + telefono_usuario + " | Contraseña: " + password_usuario + " | NSS: " + nss + " | ID Penalización: "
                 + id_penalizacion;
     }
+
+    public String registro() {
+        return "[REGISTRO Usuarios] " + toString();
+    }
 }
